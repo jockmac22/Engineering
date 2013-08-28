@@ -1,0 +1,26 @@
+class Board
+	private tiles is a two-dimensional array of Tiles
+	private width is the maximum width of the board in tiles
+	private height is the maximum height of the board in tiles
+
+	constructor (width, height)
+		this.width = width
+		this.height = height
+		initialize this.tiles to this.width x this.height dimensions
+
+	method getTile(x, y)
+		if not 0 < x < this.width
+			return nothing
+		if not 0 < y < this.height
+			return nothing
+		return the this.tiles[x, y]
+
+	method setTile(tile, x, y)
+		if xPosition is less than 0 or greater than or equal to property width
+			return out of bounds exception
+		if yPosition is less than 0 or greater than or equal to property height
+			return out of bounds exception
+		tile.setBoard(this)
+		tile.setPosition(x,y)
+		this.tiles[x, y] = tile
+		tile.mapAdjacentTiles()

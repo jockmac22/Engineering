@@ -1,0 +1,42 @@
+class Tile
+	private x is the x position of the tile
+	private y is the y position of the tile
+	private board is an instance of Board class
+	private adjacentTiles is a hash of boardTiles
+	private walkable is an indicator of whether the tile is able to be walked on
+
+	constructor (board, x y)
+		set this.setBoard(board)
+		set this.setPosition(x,y)
+
+	public method setBoard(board)
+		set this.board = board
+
+	public method setPosition(x,y)
+		set this.x = x
+		set this.y = y
+
+	public method getX()
+		return this.x
+		
+	public method.getY()
+		return this.y
+
+	public method boardAdjacentTiles()
+		Loop: yOffset = -1 to 1
+			Loop: xOffset = -1 to 1
+				if xOffset and yOffset are 0
+					continue the loop
+				initialize tile = board.getTile(this.x+xOffset, this.y+yOffset)
+				if tile is not nothing
+					this.setAdjacentTile(tile, xOffset, yOffset)
+					tile.setAdjacentTile(this, -xOffset, -yOffset)
+
+	public method setAdjacentTile(tile, xOffset, yOffset)
+		if tile is not nothing
+			tileKey = xOffset + '_' + yOffset
+			this.adjacentTiles[tileKey] = tile
+
+	public method getAdjacentTile(xOffset, yOffset)
+		tileKey = xOffset + '_' + yOffset
+		return this.adjacentTiles[tileKey]

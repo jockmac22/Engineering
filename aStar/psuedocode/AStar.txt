@@ -1,0 +1,87 @@
+virtual class AStar
+	private board is an instance of Board
+	private startStep is an instance of Tile
+	private endStep is an instance of Tile
+	private openSteps is a hash of AStarPathSteps
+	private closedSteps is a hash of AStarPathSteps
+
+	constructor (board, startTile, endTile)
+		set this.board = board
+		set this.startStep = (AStarPathStep)startTile
+		set this.endTile = (AStarPathStep)endTile
+
+	public method getPath()
+		clear this.openSteps
+		clear this.closedSteps
+		
+		this.openSteps.push(this.startStep)
+		this.calculateStep(this.startStep)
+
+	private method calculateStep(step)
+		step.calculate(this.endStep)
+		
+		remove step from the openSteps array
+		add step to the closedSteps array
+		
+		for each tile in step.adjacentTiles
+			stepKey = adjacentStep.getKey()
+			if adjacentStep.walkable and adjacentStep not in this.closedSteps:
+				adjacentStep = (AStarPathStep)tile
+				adjacentStep.setPrevious(step)
+
+				if openSteps contains stepKey
+					existingStep = this.openSteps[stepKey]
+					if existingStep.getG() > adjacentStep.getG()
+						this.openSteps[adjacentStep.getKey()] = adjacentStep
+				else
+					this.openSteps[stepKey] = adjacentStep
+
+
+class AStarPathStep extends Tile
+
+	private h is an integer
+	private g is an integer
+
+	private previousStep is an instance of AStarPathStep or nothing
+	private nextStep is an instance of AStarPathStep or nothing
+
+	public method setPrevious(previous)
+		this.previousStep = previous
+
+	public method setNext(next)
+		this.nextStep = next
+
+	public method getKey()
+		return this.getX() + "_" + this.getY()
+
+	public method getG()
+		return this.g
+
+	public method getH()
+		return this.h
+
+	public method getF()
+		return this.g + this.h
+
+	public method calculate(destinationStep)
+		this.calculateG()
+		this.calculateH(destinationStep)
+
+	private method calculateH(destinationStep)
+		this.h = (absolute(destinationStep.getX()-this.getX()) + absolute((destinationStep.getY-this.getY()))) * 10
+
+	private method calculateG()
+		distance = 0
+		if this.previousStep is nothing
+			return distance
+
+		distance = this.previousStep.getG()
+
+		diff = (this.getX() - this.previousStep.getX()) + (this.getY() - this.previousStep.getY())
+		if absolute(diff) = 1
+			distance += 10
+		else
+			distance += 14
+
+		this.g = distance
+		

@@ -10,4 +10,5 @@ build.xml
 nbproject/
 manifest.mf
 build/
+nbbuild.xml
 
